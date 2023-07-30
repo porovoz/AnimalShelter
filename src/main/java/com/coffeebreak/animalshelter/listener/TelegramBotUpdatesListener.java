@@ -15,13 +15,15 @@ import org.springframework.stereotype.Component;
 
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Component
 public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private final TelegramBot telegramBot;
-    private final Logger logger = LoggerFactory.getLogger (TelegramBotUpdatesListener.class);
+    private final Logger logger = LoggerFactory.getLogger ( TelegramBotUpdatesListener.class );
 
     public TelegramBotUpdatesListener(TelegramBot telegramBot) {
         this.telegramBot = telegramBot;
@@ -29,73 +31,84 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     @PostConstruct
     public void init() {
-        telegramBot.setUpdatesListener(this);
+        telegramBot.setUpdatesListener ( this );
     }
 
     @Override
     public int process(List<Update> updates) {
 
         for (Update update : updates) {
-            if (update.message() != null) {
-                logger.info ("Handles update: {}", update);
-                Message message = update.message();
-                Long chatId = message.chat().id();
-                String messageText = message.text();
+            if (update.message () != null) {
+                logger.info ( "Handles update: {}" , update );
+                Message message = update.message ();
+                Long chatId = message.chat ().id ();
+                String messageText = message.text ();
 
-                    switch(messageText) {
-                        case "/start":
-                            sendMessage(chatId , "Добро пожаловать! Я бот приюта для животных. Выберите приют: Приют для кошек или Приют для собак.");
-                            sendInlineKeyboard(chatId);
-                            break;
-                        case "Приют для кошек":
-                            // sendMenuMessage(responses, chatId);
-                            break;
-                        case "Приют для собак":
-                            // sendMenuMessage(responses, chatId);
-                            break;
-                        case "Узнать информацию о приюте (этап 1)":
-                            // sendInfoMessage(responses, chatId);
-                            break;
-                        case "Как взять животное из приюта (этап 2)":
-                            // sendTakePetMessage(responses, chatId);
-                            break;
-                        case "Прислать отчет о питомце (этап 3)":
-                            // sendReportMessage(responses, chatId);
-                            break;
-                        case "Позвать добровольца":
-                            // sendVolunteerMessage(responses, chatId);
-                            break;
-                        default:
-                            // Обработка незапланированного сценария
-                            break;
-                    }
+                switch (messageText) {
+                    case "/start":
+                        sendMessage ( chatId , "Добро пожаловать! Я бот приюта для животных. Выберите приют: Приют для кошек или Приют для собак." );
+                        sendMenuKeyboard ( chatId );
+                        break;
+                    case "Приют для кошек":
+                        // sendMenuMessage(responses, chatId);
+                        break;
+                    case "Приют для собак":
+                        // sendMenuMessage(responses, chatId);
+                        break;
+                    case "Узнать информацию о приюте (этап 1)":
+                        // sendInfoMessage(responses, chatId);
+                        break;
+                    case "Как взять животное из приюта (этап 2)":
+                        // sendTakePetMessage(responses, chatId);
+                        break;
+                    case "Прислать отчет о питомце (этап 3)":
+                        // sendReportMessage(responses, chatId);
+                        break;
+                    case "Позвать добровольца":
+                        // sendVolunteerMessage(responses, chatId);
+                        break;
+                    default:
+                        // Обработка незапланированного сценария
+                        break;
+                }
 
             }
 
         }
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
     }
-    private void sendMessage(Long chatId, String message) {
-        SendMessage sendMessage = new SendMessage(chatId, message);
-        SendResponse sendResponse = telegramBot.execute(sendMessage);
-        if (!sendResponse.isOk()) {
-            logger.error("Error during sending message: {}", sendResponse.description());
+
+    private void sendMessage(Long chatId , String message) {
+        SendMessage sendMessage = new SendMessage ( chatId , message );
+        SendResponse sendResponse = telegramBot.execute ( sendMessage );
+        if (!sendResponse.isOk ()) {
+            logger.error ( "Error during sending message: {}" , sendResponse.description () );
         }
     }
 
-    private void sendInlineKeyboard(Long chatId) {
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        InlineKeyboardButton buttonDogShelter = new InlineKeyboardButton("Приют для собак");
-        InlineKeyboardButton buttonCatShelter = new InlineKeyboardButton("Приют для кошек");
-        buttonDogShelter.callbackData("dog_shelter");
-        buttonCatShelter.callbackData("cat_shelter");
-        inlineKeyboardMarkup.addRow(buttonDogShelter, buttonCatShelter);
+    private void sendMenuKeyboard(Long chatId) {
+        InlineKeyboardButton buttonDogShelter = new InlineKeyboardButton ( "Приют для собак" ).callbackData ( "dog_shelter" );
+        InlineKeyboardButton buttonCatShelter = new InlineKeyboardButton ( "Приют для кошек" ).callbackData ( "cat_shelter" );
+        InlineKeyboardButton buttonGetInformationAboutShelter = new InlineKeyboardButton ( "Узнать информацию о приюте" ).callbackData ( "info_shelter" );
+        InlineKeyboardButton buttonTakeAnimal = new InlineKeyboardButton ( "Как взять животное из приюта" ).callbackData ( "take_animal" );
+        InlineKeyboardButton buttonPetReport = new InlineKeyboardButton ( "Прислать отчет о питомце" ).callbackData ( "pet_report" );
+        InlineKeyboardButton buttonCallVolunteer = new InlineKeyboardButton ( "Позвать волонтера" ).callbackData ( "call_volunteer" );
+        InlineKeyboardButton[][] buttons =
+                {
+                        {buttonCatShelter , buttonDogShelter} ,
+                        {buttonGetInformationAboutShelter} ,
+                        {buttonTakeAnimal} ,
+                        {buttonPetReport , buttonCallVolunteer}
+                };
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup ( buttons );
+        SendMessage sendMessage = new SendMessage ( chatId , "Выберите нужный пункт меню:" )
+                .replyMarkup ( inlineKeyboardMarkup );
 
-        SendMessage sendMessage = new SendMessage(chatId, "Выберите приют:")
-                .replyMarkup(inlineKeyboardMarkup);
-        SendResponse sendResponse = telegramBot.execute(sendMessage);
-        if (!sendResponse.isOk()) {
-            logger.error("Error during sending message: {}", sendResponse.description());
+        SendResponse sendResponse = telegramBot.execute ( sendMessage );
+        if (!sendResponse.isOk ()) {
+            logger.error ( "Error during sending message: {}" , sendResponse.description () );
         }
     }
+
+
 }
