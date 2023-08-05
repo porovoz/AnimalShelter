@@ -97,11 +97,11 @@ public class Dog {
     @Override
     public String toString() {
         return "Dog{" +
-                "id=" + id +
-                ", nickName='" + nickName + '\'' +
-                ", age=" + age +
-                ", dogBreed='" + dogBreed + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+                  "id=" + id +
+                  ", nickName='" + nickName + '\'' +
+                  ", age=" + age +
+                  ", dogBreed='" + dogBreed + '\'' +
+                  ", description='" + description + '\'' +
+                  '}';
     }
 }

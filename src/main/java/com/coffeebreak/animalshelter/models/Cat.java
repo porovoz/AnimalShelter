@@ -99,11 +99,11 @@ public class Cat {
     @Override
     public String toString() {
         return "Cat{" +
-                "id=" + id +
-                ", nickName='" + nickName + '\'' +
-                ", age=" + age +
-                ", catBreed='" + catBreed + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+                  "id=" + id +
+                  ", nickName='" + nickName + '\'' +
+                  ", age=" + age +
+                  ", catBreed='" + catBreed + '\'' +
+                  ", description='" + description + '\'' +
+                  '}';
     }
 }

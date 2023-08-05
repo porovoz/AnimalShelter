@@ -116,7 +116,7 @@ public class DogOwnerServiceTest {
      * Тестирование метода <b>findAllDogOwners()</b> в DogOwnerService
      * <br>
      * Mockito: когда вызывается метод <b>DogOwnerRepository::findAll</b>,
-     * возвращается пустая коллекция владельцев собак <b>DogOwner</b>
+     * возвращается пустая коллекция владельцев собак <b>adopterDogs</b>
      */
     @Test
     @DisplayName("Проверка поиска всех собак и возвращения из базы данных пустого списка")
@@ -151,12 +151,14 @@ public class DogOwnerServiceTest {
      * <br>
      * Mockito: когда вызывается метод <b>DogOwnerRepository::findById</b>,
      * выбрасывается исключение <b>DogOwnerNotFoundException</b>
+     *
+     * @throws DogOwnerNotFoundException
      */
     @Test
     @DisplayName("Проверка исключения в методе редактирования владельца собаки")
     public void updateDogOwnerExceptionTest() {
         when(dogOwnerRepository.findById(any(Long.class))).thenThrow(DogOwnerNotFoundException.class);
         org.junit.jupiter.api.Assertions.assertThrows(DogOwnerNotFoundException.class,
-                () -> dogOwnerService.updateDogOwner(expected));
+                  () -> dogOwnerService.updateDogOwner(expected));
     }
 }

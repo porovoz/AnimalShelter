@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
-
 @Service
 public class AnimalReportDataService {
     private final AnimalReportDataRepository animalReportDataRepository;
@@ -81,7 +80,7 @@ public class AnimalReportDataService {
     public Collection<AnimalReportData> findAllAnimalReport() {
         return animalReportDataRepository.findAll ();
     }
-    
+
     /*
     пока в работе
     public AnimalReportData findByChatId(Long chatId) {

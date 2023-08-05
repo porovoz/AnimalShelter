@@ -149,7 +149,7 @@ public class DogServiceTest {
     public void updateDogExceptionTest() {
         when(dogRepository.findById(any(Long.class))).thenThrow(DogNotFoundException.class);
         org.junit.jupiter.api.Assertions.assertThrows(DogNotFoundException.class,
-                () -> dogService.updateDog(expected));
+                  () -> dogService.updateDog(expected));
     }
 
 }

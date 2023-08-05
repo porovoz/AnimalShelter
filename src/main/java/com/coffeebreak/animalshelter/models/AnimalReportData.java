@@ -187,18 +187,18 @@ public class AnimalReportData {
     @Override
     public String toString() {
         return "AnimalReportData{" +
-                "id=" + id +
-                ", chatId=" + chatId +
-                ", rationOfAnimal='" + rationOfAnimal + '\'' +
-                ", healthOfAnimal='" + healthOfAnimal + '\'' +
-                ", habitsOfAnimal='" + habitsOfAnimal + '\'' +
-                ", daysOfOwnership=" + daysOfOwnership +
-                ", filePath='" + filePath + '\'' +
-                ", fileSize=" + fileSize +
-                ", data=" + Arrays.toString(data) +
-                ", caption='" + caption + '\'' +
-                ", lastMessage=" + lastMessage +
-                ", lastMessageMs=" + lastMessageMs +
-                '}';
+                  "id=" + id +
+                  ", chatId=" + chatId +
+                  ", rationOfAnimal='" + rationOfAnimal + '\'' +
+                  ", healthOfAnimal='" + healthOfAnimal + '\'' +
+                  ", habitsOfAnimal='" + habitsOfAnimal + '\'' +
+                  ", daysOfOwnership=" + daysOfOwnership +
+                  ", filePath='" + filePath + '\'' +
+                  ", fileSize=" + fileSize +
+                  ", data=" + Arrays.toString(data) +
+                  ", caption='" + caption + '\'' +
+                  ", lastMessage=" + lastMessage +
+                  ", lastMessageMs=" + lastMessageMs +
+                  '}';
     }
 }

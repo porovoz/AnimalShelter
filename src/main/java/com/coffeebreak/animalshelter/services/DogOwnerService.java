@@ -6,7 +6,6 @@ import com.coffeebreak.animalshelter.repositories.DogOwnerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
-
 /**
  * Класс-сервис, содержащий CRUD-методы объекта класса DogOwner
  * @see DogOwner

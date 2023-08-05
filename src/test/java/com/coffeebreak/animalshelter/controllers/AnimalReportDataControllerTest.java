@@ -87,21 +87,21 @@ class AnimalReportDataControllerTest {
         when(reportDataService.createAnimalReportData(reportTestOne)).thenReturn(reportTestOne);
 
         mvc.perform(MockMvcRequestBuilders.post("/report")
-                        .content(objectMapper.writeValueAsString(reportTestOne))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.chatId").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.rationOfAnimal").value("Еда для животного"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.healthOfAnimal").value("Состояние животного"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.habitsOfAnimal").value("Привычки животного"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.daysOfOwnership").value(7))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.filePath").value("/path/to/file1"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.fileSize").value(1024))
+                            .content(objectMapper.writeValueAsString(reportTestOne))
+                            .contentType(MediaType.APPLICATION_JSON))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.chatId").value(1))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.rationOfAnimal").value("Еда для животного"))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.healthOfAnimal").value("Состояние животного"))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.habitsOfAnimal").value("Привычки животного"))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.daysOfOwnership").value(7))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.filePath").value("/path/to/file1"))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.fileSize").value(1024))
 //                .andExpect(MockMvcResultMatchers.jsonPath("$.data").value(reportTestOne.getData()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.caption").value("Описание отчета"))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.caption").value("Описание отчета"))
 //                .andExpect(MockMvcResultMatchers.jsonPath("$.lastMessage", Matchers.is("Fri Aug 04 14:52:59 MSK 2023")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.lastMessageMs").value(1590879578000L))
-                .andExpect(status().isOk());
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.lastMessageMs").value(1590879578000L))
+                  .andExpect(status().isOk());
 
         Mockito.verify(reportDataService, Mockito.times(1)).createAnimalReportData(reportTestOne);
     }
@@ -110,10 +110,10 @@ class AnimalReportDataControllerTest {
     void getAllDAnimalReportDataTest() throws Exception {
         when(reportDataService.findAllAnimalReport()).thenReturn(reportListTest);
         mvc.perform(MockMvcRequestBuilders.get("/report/all_report")
-                .content(objectMapper.writeValueAsString(reportListTest))
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(Matchers.greaterThan(0))))
-                .andExpect(status().isOk());
+                            .content(objectMapper.writeValueAsString(reportListTest))
+                            .contentType(MediaType.APPLICATION_JSON))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(Matchers.greaterThan(0))))
+                  .andExpect(status().isOk());
     }
 
     @Test
@@ -121,29 +121,29 @@ class AnimalReportDataControllerTest {
         when(reportDataService.updateAnimalReportData(reportTestOne)).thenReturn(reportTestOne);
 
         mvc.perform(MockMvcRequestBuilders.put("/report")
-                        .content(objectMapper.writeValueAsString(reportTestOne))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.chatId").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.rationOfAnimal").value("Еда для животного"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.healthOfAnimal").value("Состояние животного"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.habitsOfAnimal").value("Привычки животного"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.daysOfOwnership").value(7))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.filePath").value("/path/to/file1"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.fileSize").value(1024))
+                            .content(objectMapper.writeValueAsString(reportTestOne))
+                            .contentType(MediaType.APPLICATION_JSON))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.chatId").value(1))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.rationOfAnimal").value("Еда для животного"))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.healthOfAnimal").value("Состояние животного"))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.habitsOfAnimal").value("Привычки животного"))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.daysOfOwnership").value(7))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.filePath").value("/path/to/file1"))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.fileSize").value(1024))
 //                .andExpect(MockMvcResultMatchers.jsonPath("$.data").value(reportTestOne.getData()))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.caption").value("Описание отчета"))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.caption").value("Описание отчета"))
 //                .andExpect(MockMvcResultMatchers.jsonPath("$.lastMessage", Matchers.is("Fri Aug 04 14:52:59 MSK 2023")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.lastMessageMs").value(1590879578000L))
-                .andExpect(status().isOk());
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.lastMessageMs").value(1590879578000L))
+                  .andExpect(status().isOk());
 
         Mockito.verify(reportDataService, Mockito.times(1)).updateAnimalReportData(reportTestOne);
     }
 
     @Test
     void deleteAnimalReportDataByIdTest()throws Exception  {
-            doNothing().when(reportDataService).deleteAnimalReportData(reportTestOne.getId());
-            mvc.perform(MockMvcRequestBuilders.delete("/report/{animalReportDataId}",reportTestOne.getId()))
-                    .andExpect(status().isOk());
+        doNothing().when(reportDataService).deleteAnimalReportData(reportTestOne.getId());
+        mvc.perform(MockMvcRequestBuilders.delete("/report/{animalReportDataId}",reportTestOne.getId()))
+                  .andExpect(status().isOk());
     }
 }

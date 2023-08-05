@@ -26,6 +26,11 @@ public class CatServiceTest {
     @InjectMocks
     private CatService catService;
 
+    @BeforeEach
+    public void setUp() {
+        // Инициализация заглушек
+    }
+
     @Test
     public void createCatTest() {
         // Создание нового ожидаемого объекта класса Cat
@@ -158,5 +163,3 @@ public class CatServiceTest {
         });
     }
 }
-
-

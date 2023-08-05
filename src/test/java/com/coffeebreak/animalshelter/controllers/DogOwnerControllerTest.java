@@ -89,10 +89,10 @@ public class DogOwnerControllerTest {
     void createDogOwnerTest200() throws Exception {
         when(dogOwnerService.createDogOwner(expected)).thenReturn(expected);
         mockMvc.perform(post("/dog_owner")
-                        .content(objectMapper.writeValueAsString(expected))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(expected)));
+                            .content(objectMapper.writeValueAsString(expected))
+                            .contentType(MediaType.APPLICATION_JSON))
+                  .andExpect(status().isOk())
+                  .andExpect(content().json(objectMapper.writeValueAsString(expected)));
     }
 
     /**
@@ -111,16 +111,16 @@ public class DogOwnerControllerTest {
         Mockito.when(dogOwnerService.findDogOwnerById(any(Long.class))).thenReturn(expected);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/dog_owner/{dogOwnerId}", 1L)
-                        .content(objectMapper.writeValueAsString(expected))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.fullName").value("testFullName"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(30))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.address").value("testAddress"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.phoneNumber").value("testPhoneNumber"))
-                .andExpect(status().isOk());
+                            .get("/dog_owner/{dogOwnerId}", 1L)
+                            .content(objectMapper.writeValueAsString(expected))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.fullName").value("testFullName"))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(30))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.address").value("testAddress"))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.phoneNumber").value("testPhoneNumber"))
+                  .andExpect(status().isOk());
 
         Mockito.verify(dogOwnerService, Mockito.times(1)).findDogOwnerById(1L);
     }
@@ -147,12 +147,12 @@ public class DogOwnerControllerTest {
         Mockito.when(dogOwnerService.findAllDogOwners()).thenReturn(expected);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/dog_owner")
-                        .content(objectMapper.writeValueAsString(expected))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(Matchers.greaterThan(0))))
-                .andExpect(status().isOk());
+                            .get("/dog_owner")
+                            .content(objectMapper.writeValueAsString(expected))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$", Matchers.hasSize(Matchers.greaterThan(0))))
+                  .andExpect(status().isOk());
     }
 
     /**
@@ -170,16 +170,16 @@ public class DogOwnerControllerTest {
         Mockito.when(dogOwnerService.updateDogOwner(expected)).thenReturn(expected);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .put("/dog_owner")
-                        .content(objectMapper.writeValueAsString(expected))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.fullName").value("testFullName"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(30))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.address").value("testAddress"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.phoneNumber").value("testPhoneNumber"))
-                .andExpect(status().isOk());
+                            .put("/dog_owner")
+                            .content(objectMapper.writeValueAsString(expected))
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.fullName").value("testFullName"))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(30))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.address").value("testAddress"))
+                  .andExpect(MockMvcResultMatchers.jsonPath("$.phoneNumber").value("testPhoneNumber"))
+                  .andExpect(status().isOk());
 
         Mockito.verify(dogOwnerService, Mockito.times(1)).updateDogOwner(expected);
     }
@@ -198,9 +198,8 @@ public class DogOwnerControllerTest {
         Mockito.doNothing().when(dogOwnerService).deleteDogOwner(expected.getId());
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/dog_owner/{dogOwnerId}", expected.getId()))
-                .andExpect(status().isOk());
+                            .delete("/dog_owner/{dogOwnerId}", expected.getId()))
+                  .andExpect(status().isOk());
     }
 
 }
-
