@@ -2,12 +2,14 @@ package com.coffeebreak.animalshelter.controllers;
 
 import com.coffeebreak.animalshelter.listener.TelegramBotUpdatesListener;
 import com.coffeebreak.animalshelter.models.AnimalReportData;
+import com.coffeebreak.animalshelter.repositories.AnimalReportDataRepository;
 import com.coffeebreak.animalshelter.services.AnimalReportDataService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -34,6 +36,9 @@ class AnimalReportDataControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @Mock
+    private AnimalReportDataRepository animalReportDataRepository;
 
     @MockBean
     private AnimalReportDataService reportDataService;
@@ -79,7 +84,7 @@ class AnimalReportDataControllerTest {
     }
 
     @AfterEach
-    void tearDown() {
+    void tearDown() { animalReportDataRepository.deleteAll();
     }
 
     @Test

@@ -95,7 +95,7 @@ public class AnimalReportDataService {
     public Collection<AnimalReportData> findListAnimalReport(Long chatId) {
         return animalReportDataRepository.findAllByChatId ( chatId );
     }*/
-
+/*
     //работа с файлами пока тестовый вариант
     public void uploadReportData(Long personId, byte[] pictureFile, File file, String ration, String health,
                                  String habits, String filePath, Date dateSendMessage, Long timeDate, long daysOfReports) throws IOException {
@@ -126,4 +126,6 @@ public class AnimalReportDataService {
         report.setLastMessageMs(timeDate);
         this.animalReportDataRepository.save(report);
     }
+    */
+
 }
