@@ -5,6 +5,8 @@ import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
+import com.pengrad.telegrambot.model.request.InlineKeyboardButton;
+import com.pengrad.telegrambot.model.request.InlineKeyboardMarkup;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
 import org.slf4j.Logger;
@@ -43,6 +45,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     switch(messageText) {
                         case "/start":
                             sendMessage(chatId , "Добро пожаловать! Я бот приюта для животных. Выберите приют: Приют для кошек или Приют для собак.");
+                            sendInlineKeyboard(chatId);
                             break;
                         case "Приют для кошек":
                             // sendMenuMessage(responses, chatId);
@@ -80,4 +83,19 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         }
     }
 
+    private void sendInlineKeyboard(Long chatId) {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+        InlineKeyboardButton buttonDogShelter = new InlineKeyboardButton("Приют для собак");
+        InlineKeyboardButton buttonCatShelter = new InlineKeyboardButton("Приют для кошек");
+        buttonDogShelter.callbackData("dog_shelter");
+        buttonCatShelter.callbackData("cat_shelter");
+        inlineKeyboardMarkup.addRow(buttonDogShelter, buttonCatShelter);
+
+        SendMessage sendMessage = new SendMessage(chatId, "Выберите приют:")
+                .replyMarkup(inlineKeyboardMarkup);
+        SendResponse sendResponse = telegramBot.execute(sendMessage);
+        if (!sendResponse.isOk()) {
+            logger.error("Error during sending message: {}", sendResponse.description());
+        }
+    }
 }

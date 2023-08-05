@@ -1,7 +1,7 @@
 package com.coffeebreak.animalshelter.services;
 
+
 import com.coffeebreak.animalshelter.exceptions.AnimalReportDataNotFoundException;
-import com.coffeebreak.animalshelter.exceptions.CatNotFoundException;
 import com.coffeebreak.animalshelter.models.AnimalReportData;
 import com.coffeebreak.animalshelter.repositories.AnimalReportDataRepository;
 import com.pengrad.telegrambot.model.File;
@@ -11,10 +11,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
 
-/**
- * @see AnimalReportData
- * @see AnimalReportDataRepository
- */
 @Service
 public class AnimalReportDataService {
     private final AnimalReportDataRepository animalReportDataRepository;
@@ -41,7 +37,7 @@ public class AnimalReportDataService {
      * Используется метод репозитория {@link org.springframework.data.jpa.repository.JpaRepository#findById(Object)}
      * @param id идентификатор искомого объекта класса AnimalReportData, не может быть null
      * @return найденный объект класса AnimalReportData
-     * @throws CatNotFoundException если объект класса AnimalReportData не был найден в БД
+     * @throws AnimalReportDataNotFoundException если объект класса AnimalReportData не был найден в БД
      */
     public AnimalReportData findById(Long id) {
         return animalReportDataRepository.findById ( id ).orElseThrow ( AnimalReportDataNotFoundException::new );
@@ -53,7 +49,7 @@ public class AnimalReportDataService {
      * Используется метод репозитория {@link org.springframework.data.jpa.repository.JpaRepository#save(Object)}
      * @param animalReportData объект класса AnimalReportData, не может быть null
      * @return изменённый объект класса AnimalReportData
-     * @throws CatNotFoundException если объект класса AnimalReportData не был найден в БД
+     * @throws AnimalReportDataNotFoundException если объект класса AnimalReportData не был найден в БД
      */
     public AnimalReportData updateAnimalReportData(AnimalReportData animalReportData) {
         if (animalReportData.getId () != null) {
@@ -61,7 +57,7 @@ public class AnimalReportDataService {
                 return animalReportDataRepository.save ( animalReportData );
             }
         }
-        throw new AnimalReportDataNotFoundException ();
+        throw new AnimalReportDataNotFoundException();
 
     }
 

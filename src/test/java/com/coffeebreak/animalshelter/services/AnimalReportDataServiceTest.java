@@ -17,6 +17,11 @@ import java.util.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
+/**
+ * Класс для проверки CRUD-операций класса AnimalReportDataService
+ * @see AnimalReportData
+ * @see AnimalReportDataRepository
+ */
 @ExtendWith(MockitoExtension.class)
 class AnimalReportDataServiceTest {
     @Mock
