@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ import java.util.Collection;
 @RequestMapping("/dog")
 @Tag(name = "Dogs", description = "CRUD-операции для работы с собаками")
 public class DogController {
-
+    @Autowired
     private final DogService dogService;
 
     public DogController(DogService dogService) {
@@ -56,7 +57,7 @@ public class DogController {
         return ResponseEntity.ok(createdDog);
     }
 
-    @GetMapping("/{dogId}")
+    @GetMapping("/{id}")
     @Operation(
             summary = "Найти собаку по ее уникальному идентификатору ",
             description = "Поиск собаки по ее уникальному идентификатору"
