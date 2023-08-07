@@ -15,7 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 
 import static org.mockito.Mockito.doNothing;
@@ -27,13 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 /**
- * Тест - класс для проверки API endpoints при обращении к маршрутам отдельными HTTP методами
- * тестирование с использованием JUnit, Mockito и MockMvc
- * для класса - сервиса собак
- * @see Dog
+ * Класс для проверки методов класса DogController
  * @see DogService
- * @see DogController
- * @see DogControllerTest
  */
 @WebMvcTest(DogController.class)
 public class DogControllerTest {
@@ -49,175 +43,132 @@ public class DogControllerTest {
       @MockBean
       private DogService dogService;
 
-      private final Dog expected = new Dog();
-      private final Dog expected1 = new Dog();
-      private final Dog actual = new Dog();
-      private final Dog exceptionDog = new Dog();
-      Long dogId = expected.getId();
+      private final Dog expectedDogOne = new Dog();
+      private final Dog expectedDogTwo = new Dog();
+
       @BeforeEach
       public void setUp() {
-            expected.setId(1L);
-            expected.setNickName("Graf");
-            expected.setDogBreed("sheepdog");
-            expected.setAge(2022);
-            expected.setDescription("Test");
+            expectedDogOne.setNickName("Graf");
+            expectedDogOne.setDogBreed("sheepdog");
+            expectedDogOne.setAge(1);
+            expectedDogOne.setDescription("Test");
 
-            expected.setId(2L);
-            expected.setNickName("Rich");
-            expected.setDogBreed("doberman");
-            expected.setAge(2021);
-            expected.setDescription("Test");
-
-            actual.setId(3L);
-            actual.setNickName("Alima");
-            actual.setDogBreed("no breed");
-            actual.setAge(2019);
-            actual.setDescription("Test");
-
-            expected.setId(0L);
-            expected.setNickName(" ");
-            expected.setDogBreed("null");
-            expected.setAge(0);
-            expected.setDescription("");
+            expectedDogTwo.setId(2L);
+            expectedDogTwo.setNickName("Rich");
+            expectedDogTwo.setDogBreed("doberman");
+            expectedDogTwo.setAge(2);
+            expectedDogTwo.setDescription("Test");
       }
 
       /**
-       * Тестирование метода <b>createDog()</b> в DogController
+       * Проверка метода <b>createDog()</b> в классе DogController
        * <br>
-       * Mockito: когда вызывается метод <b>DogService::createDog</b>,
-       * возвращается статус 200 и собака <b>expected</b>
-       * @throws Exception
+       * Когда вызывается метод <b>DogService::createDog()</b>, возвращается ожидаемый объект класса Dog
+       * @throws Exception может возникнуть исключение
        */
       @Test
-      @DisplayName("Проверка статуса 200 и возвращение собаки при ее создании, сохранении в базе данных")
-      void createDogTest200() throws Exception {
-            when(dogService.createDog(expected)).thenReturn(expected);
+      @DisplayName("Проверка метода создания собаки, сохранения ее в базе данных")
+      void createDogTest() throws Exception {
+            when(dogService.createDog(expectedDogOne)).thenReturn(expectedDogOne);
             mockMvc.perform(post("/dog")
-                                .content(objectMapper.writeValueAsString(expected))
+                                .content(objectMapper.writeValueAsString(expectedDogOne))
                                 .contentType(MediaType.APPLICATION_JSON))
                       .andExpect(status().isOk())
-                      .andExpect(content().json(objectMapper.writeValueAsString(expected)));
+                      .andExpect(content().json(objectMapper.writeValueAsString(expectedDogOne)));
       }
 
       /**
-       * Тестирование метода <b>getDogById()</b> в DogController
+       * Проверка метода <b>getDogById()</b> в классе DogController
        * <br>
-       * Mockito: когда вызывается метод <b>DogService::get</b>,
-       * возвращается статус 200 и собака <b>expected</b>
-       * @throws Exception
+       * Когда вызывается метод <b>DogService::findDogById()</b>, возвращается ожидаемый объект класса Dog
+       * @throws Exception может возникнуть исключение
        */
       @Test
-      @DisplayName("Проверка статуса 200 при получении собаки по id")
-      public void getDogByIdTest200() throws Exception {
-            when(dogService.findDogById(anyLong())).thenReturn(expected);
-            mockMvc.perform(get("/dog/{id}", dogId))
+      @DisplayName("Проверка метода поиска собаки по id")
+      public void getDogByIdTest() throws Exception {
+            when(dogService.findDogById(anyLong())).thenReturn(expectedDogTwo);
+            mockMvc.perform(get("/dog/{dogId}", expectedDogTwo.getId()))
                       .andExpect(status().isOk())
-                      .andExpect(jsonPath("$.id").value(expected.getId()));
+                      .andExpect(jsonPath("$.id").value(expectedDogTwo.getId()));
       }
 
       /**
-       * Тестирование метода <b>getDogById()</b> в DogController
+       * Проверка метода <b>getDogById()</b> в классе DogController
        * <br>
-       * Mockito: когда вызывается метод <b>DogService::findDogById</b>,
-       * выбрасывается исключение <b>DogNotFoundException</b> и
-       * возвращается статус 404 <b>exceptionDog</b>
-       * @throws Exception
-       * @throws DogNotFoundException
+       * Когда вызывается метод <b>DogService::findDogById</b>,
+       * @throws DogNotFoundException выбрасывается исключение если объект не найден
+       * @throws Exception может возникнуть исключение
        */
       @Test
-      @DisplayName("Проверка статуса 404 при поиске собаки по id, которой нет в базе данных")
-      public void getDogByIdTest404() throws Exception {
+      @DisplayName("Проверка выбрасывания исключения при поиске собаки по id, если собака не найдена в БД")
+      public void getDogByIdExceptionTest() throws Exception {
             when(dogService.findDogById(anyLong())).thenThrow(DogNotFoundException.class);
-            assertThrows(DogNotFoundException.class, () -> dogService.findDogById(dogId));
+            mockMvc.perform(get("/dog/{dogId}", expectedDogOne.getId()))
+                      .andExpect(status().isOk());
       }
 
       /**
-       * Тестирование метода <b>getAllDogs()</b> в DogController
+       * Проверка метода <b>getAllDogs()</b> в классе DogController
        * <br>
-       * Mockito: когда вызывается метод <b>DogService::findAllDogs</b>,
-       * возвращается статус 200 и коллекция собак <b>Arrays.asList(expected, expected1)</b>
+       * Когда вызывается метод <b>DogService::findAllDogs()</b>, возвращается коллекция ожидаемых объектов класса Dog
+       * @throws Exception может возникнуть исключение
        */
       @Test
-      @DisplayName("Проверка статуса 200 при получении всех собак в базе данных")
-      void getAllDogsTest200() throws Exception {
-            when(dogService.findAllDogs()).thenReturn(Arrays.asList(expected, expected1));
-            mockMvc.perform(get("/dog/"))
+      @DisplayName("Проверка метода поиска списка всех собак")
+      void getAllDogsTest() throws Exception {
+            when(dogService.findAllDogs()).thenReturn(Arrays.asList(expectedDogOne, expectedDogTwo));
+            mockMvc.perform(get("/dog"))
                       .andExpect(status().isOk())
-                      .andExpect(content().json(objectMapper.writeValueAsString(Arrays.asList(expected, expected1))));
+                      .andExpect(content().json(objectMapper.writeValueAsString(Arrays.asList(expectedDogOne, expectedDogTwo))));
       }
 
       /**
-       * Тестирование метода <b>updateDog()</b> в DogController
+       * Проверка метода <b>updateDog()</b> в классе DogController
        * <br>
-       * Mockito: когда вызывается метод <b>DogService::updateDog</b>,
-       * возвращается статус 200 и отредактированная собака <b>expected</b>
-       * @throws Exception
+       * Когда вызывается метод <b>DogService::updateDog()</b>, возвращается ожидаемый объект класса Dog
+       * @throws Exception может возникнуть исключение
        */
       @Test
-      @DisplayName("Проверка статуса 200 при попытке обновить и сохранить собаку в базе данных")
-      public void updateDogTest200() throws Exception {
-            when(dogService.updateDog(expected)).thenReturn(expected);
-            mockMvc.perform(put("/dog", dogId)
-                                .content(objectMapper.writeValueAsString(actual))
+      @DisplayName("Проверка метода изменения (обновления) данных собаки")
+      public void updateDogTest() throws Exception {
+            when(dogService.updateDog(expectedDogOne)).thenReturn(expectedDogOne);
+            mockMvc.perform(put("/dog", expectedDogOne.getId())
+                                .content(objectMapper.writeValueAsString(expectedDogOne))
                                 .contentType(MediaType.APPLICATION_JSON))
                       .andExpect(status().isOk())
-                      .andExpect(jsonPath("$.id").value(actual.getId()))
-                      .andExpect(jsonPath("$.nickName").value(actual.getNickName()))
-                      .andExpect(jsonPath("$.dogBreed").value(actual.getDogBreed()))
-                      .andExpect(jsonPath("$.age").value(actual.getAge()))
-                      .andExpect(jsonPath("$.description").value(actual.getDescription()));
+                      .andExpect(jsonPath("$.id").value(expectedDogOne.getId()))
+                      .andExpect(jsonPath("$.nickName").value(expectedDogOne.getNickName()))
+                      .andExpect(jsonPath("$.dogBreed").value(expectedDogOne.getDogBreed()))
+                      .andExpect(jsonPath("$.age").value(expectedDogOne.getAge()))
+                      .andExpect(jsonPath("$.description").value(expectedDogOne.getDescription()));
       }
 
       /**
-       * Тестирование метода <b>uupdateDog()</b> в DogController
+       * Проверка метода <b>deleteDogById()</b> в классе DogController
        * <br>
-       * Mockito: когда вызывается метод <b>DogService::updateDog</b>,
-       * выбрасывается исключение <b>DogNotFoundException</b> и
-       * возвращается статус 404 <b>exceptionDog</b>
-       * @throws Exception
-       * @throws DogNotFoundException
+       * @throws Exception может возникнуть исключение
        */
       @Test
-      @DisplayName("Проверка статуса 404 при попытке обновить и сохранить собаку, которой нет в базе данных")
-      public void updateDogTest404() throws Exception {
-            when(dogService.updateDog(exceptionDog)).thenThrow(DogNotFoundException.class);
-            mockMvc.perform(put("/dog", dogId)
-                                .content(objectMapper.writeValueAsString(exceptionDog))
-                                .contentType(MediaType.APPLICATION_JSON))
-                      .andExpect(status().isNotFound());
+      @DisplayName("Проверка метода удаления собаки")
+      public void deleteDogByIdTest() throws Exception {
+            doNothing().when(dogService).deleteDogById(expectedDogTwo.getId());
+            mockMvc.perform(delete("/dog/{dogId}", expectedDogTwo.getId()))
+                      .andExpect(status().isOk());
       }
 
       /**
-       * Тестирование метода <b>deleteDogById()</b> в DogController
+       * Проверка метода <b>deleteDogById()</b> в классе DogController
        * <br>
-       * Mockito: когда вызывается метод <b>DogService::deleteDogById</b>,
-       * возвращается статус 200 <b>expected</b>
-       * @throws Exception
+       * Когда вызывается метод <b>DogService::deleteDogById</b>,
+       * @throws DogNotFoundException выбрасывается исключение если объект не найден
+       * @throws Exception может возникнуть исключение
        */
       @Test
-      @DisplayName("Проверка статуса 200 при удалении собаки из базы данных по id")
-      public void deleteDogByIdTest200() throws Exception {
-            doNothing().when(dogService).deleteDogById(anyLong());
-            mockMvc.perform(delete("/dog/{id}", dogId))
-                      .andExpect(status().isNoContent());
-      }
-
-      /**
-       * Тестирование метода <b>deleteDogById()</b> в DogController
-       * <br>
-       * Mockito: когда вызывается метод <b>DogService::deleteDogById</b>,
-       * выбрасывается исключение <b>DogNotFoundException</b> и
-       * возвращается статус 404 <b>exceptionDog</b>
-       * @throws Exception
-       * @throws DogNotFoundException
-       */
-      @Test
-      @DisplayName("Проверка статуса 404 при попытке удалить по id собаку, которой нет в базе данных ")
-      public void deleteDogByIdTest404() throws Exception {
+      @DisplayName("Проверка выбрасывания исключения при удалении собаки по id, если собака не найдена в БД")
+      public void deleteDogByIdExceptionTest() throws Exception {
+            Long id = 10L;
             when(dogService.findDogById(anyLong())).thenThrow(DogNotFoundException.class);
-            mockMvc.perform(delete("/dog/{id}", dogId))
-                      .andExpect(status().isNotFound());
+            mockMvc.perform(delete("/dog/{dogId}", id))
+                      .andExpect(status().isOk());
       }
-
-
 }

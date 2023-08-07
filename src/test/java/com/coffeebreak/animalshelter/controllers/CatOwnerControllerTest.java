@@ -106,9 +106,9 @@ public class CatOwnerControllerTest {
 
             CatOwner catOwnerTestOne = new CatOwner(1L, "testFullName1", 30, "testAddress1", "testPhoneNumber1");
             expected.add(catOwnerTestOne);
-            CatOwner catOwnerTestTwo = new CatOwner(2L, "testFullName2", 30, "testAddress2", "testPhoneNumber2");
+            CatOwner catOwnerTestTwo = new CatOwner(2L, "testFullName2", 35, "testAddress2", "testPhoneNumber2");
             expected.add(catOwnerTestTwo);
-            CatOwner catOwnerTestThree = new CatOwner(3L, "testFullName3", 30, "testAddress3", "testPhoneNumber3");
+            CatOwner catOwnerTestThree = new CatOwner(3L, "testFullName3", 40, "testAddress3", "testPhoneNumber3");
             expected.add(catOwnerTestThree);
 
             Mockito.when(catOwnerService.findAllCatOwners()).thenReturn(expected);

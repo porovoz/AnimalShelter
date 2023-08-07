@@ -6,6 +6,7 @@ import com.coffeebreak.animalshelter.repositories.DogOwnerRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+
 /**
  * Класс-сервис, содержащий CRUD-методы объекта класса DogOwner
  * @see DogOwner
@@ -75,7 +76,7 @@ public class DogOwnerService {
      * Используется метод репозитория {@link org.springframework.data.jpa.repository.JpaRepository#deleteById(Object)}
      * @param dogOwnerId идентификатор искомого объекта класса DogOwner, не может быть null
      */
-    public void deleteDogOwner(Long dogOwnerId) {
+    public void deleteDogOwnerById(Long dogOwnerId) {
         dogOwnerRepository.deleteById(dogOwnerId);
     }
 }
