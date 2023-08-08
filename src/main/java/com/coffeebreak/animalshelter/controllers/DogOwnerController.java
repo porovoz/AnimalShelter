@@ -208,7 +208,7 @@ public class DogOwnerController {
                 )
       })
       public ResponseEntity<Void> deleteDogOwnerById(@PathVariable("dogOwnerId") Long dogOwnerId) {
-            dogOwnerService.deleteDogOwner(dogOwnerId);
+            dogOwnerService.deleteDogOwnerById(dogOwnerId);
             return ResponseEntity.ok().build();
       }
 }

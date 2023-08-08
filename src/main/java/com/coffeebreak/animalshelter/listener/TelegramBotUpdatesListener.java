@@ -1,6 +1,4 @@
 package com.coffeebreak.animalshelter.listener;
-
-
 import com.coffeebreak.animalshelter.keyboards.AnimalShelterKeyboard;
 import com.pengrad.telegrambot.TelegramBot;
 import com.pengrad.telegrambot.UpdatesListener;
@@ -12,98 +10,25 @@ import com.pengrad.telegrambot.response.SendResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-
 import javax.annotation.PostConstruct;
 import java.util.List;
 
+import com.coffeebreak.animalshelter.listener.Constants.*;
+
 @Component
 public class TelegramBotUpdatesListener implements UpdatesListener {
-
     private static final String START_COMMAND = "/start";
-    private static final String GREETING_TEXT = "Добро пожаловать! Я бот приюта для животных. Выберите приют: Приют для кошек или Приют для собак.";
-
-    private static final String INFORMATION_ABOUT_BOT = """
-            Информация о возможностях бота:\s
-            - Показывает информацию о приюте\s
-            - Показывает какие документы нужны\s
-            - Принимает ежедневный отчет о питомце\s
-            - Передает контактные данные добровольцам для связи""";
-
-    private static final String INFORMATION_ABOUT_CAT_SHELTER = """
-            Сайт с информацией о приюте для кошек\s
-            https://google.com\s
-            Контактные данные\s
-            https://yandex.ru\s
-            Общие рекомендации\s
-            https://ru.wikipedia.org\s
-            """;
-
-    private static final String INFORMATION_ABOUT_DOG_SHELTER = """
-            Сайт с информацией о приюте для собак\s
-            https://google.com\s
-            Контактные данные\s
-            https://yandex.ru\s
-            Общие рекомендации\s
-            https://ru.wikipedia.org\s
-            """;
-
-    private static final String INFORMATION_ABOUT_CATS = """
-            Правила знакомства с животным\s
-            https://google.com\s
-            Список документов\s
-            https://yandex.ru
-            Список рекомендаций\s
-            https://ru.wikipedia.org
-            Прочая информация\s
-            https://google.com
-            """;
-
-    private static final String INFORMATION_ABOUT_DOGS = """
-            Правила знакомства с животным\s
-            https://google.com\s
-            Список документов\s
-            https://yandex.ru
-            Список рекомендаций\s
-            https://ru.wikipedia.org
-            Советы кинолога\s
-            https://ru.wikipedia.org
-            Прочая информация\s
-            https://google.com
-            """;
-
-    private static final String INFORMATION_ABOUT_REPORT = """
-            Для отчета нужна следующая информация:\s
-            - Фото животного  \s
-            - Рацион животного\s
-            - Общее самочувствие и привыкание к новому месту\s
-            - Изменение в поведении: отказ от старых привычек, приобретение новых.\s
-            Скопируйте следующий пример и не забудьте прикрепить фото""";
-
-    private static final String REPORT_EXAMPLE = """
-            Рацион: ваш текст;\s
-            Самочувствие: ваш текст;\s
-            Поведение: ваш текст;""";
-
-    private static final String REGEX_MESSAGE = """
-            (Рацион:)(\\s)(\\W+)(;)\s
-            (Самочувствие:)(\\s)(\\W+)(;)
-            (Поведение:)(\\s)(\\W+)(;)""";
-
-    private static final Long TELEGRAM_CHAT_VOLUNTEERS = -844733515L;
-
-
     private final TelegramBot telegramBot;
-
     private final AnimalShelterKeyboard animalShelterKeyboard;
-    private final Logger logger = LoggerFactory.getLogger (TelegramBotUpdatesListener.class);
+    private final Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
+     private static final Long TELEGRAM_CHAT_VOLUNTEERS = -844733515L;
+    private boolean isCat = false;
+
 
     public TelegramBotUpdatesListener(TelegramBot telegramBot, AnimalShelterKeyboard animalShelterKeyboard) {
         this.telegramBot = telegramBot;
         this.animalShelterKeyboard = animalShelterKeyboard;
     }
-
-    private boolean isCat = false;
 
     @PostConstruct
     public void init() {
@@ -115,76 +40,171 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
         for (Update update : updates) {
             if (update.message() != null) {
-                logger.info ("Handles update: {}", update);
+                logger.info("Handles update: {}", update);
                 Message message = update.message();
                 Long chatId = message.chat().id();
                 String messageText = message.text();
 
-                switch(messageText) {
+                switch (messageText) {
+
                     case START_COMMAND:
-                        sendMessage(chatId , GREETING_TEXT);
                         animalShelterKeyboard.chooseMenu(chatId);
                         break;
+
                     case "Приют для кошек":
+                        // sendMenuMessage(responses, chatId);
                         isCat = true;
-                        animalShelterKeyboard.sendMenu(chatId);
-                        sendMessage(chatId, "Вы выбрали приют для кошек");
+                        animalShelterKeyboard.sendMenuCatShelter(chatId);
+//                            sendMessage(chatId, "Вы выбрали приют для кошек");
                         break;
+
                     case "Приют для собак":
                         isCat = false;
-                        animalShelterKeyboard.sendMenu(chatId);
-                        sendMessage(chatId, "Вы выбрали приют для собак");
+                        animalShelterKeyboard.sendMenuDogShelter(chatId);
+//                        sendMessage(chatId, "Вы выбрали приют для собак");
                         break;
+
+
                     case "Главное меню":
                         animalShelterKeyboard.chooseMenu(chatId);
                         break;
+
                     case "Узнать информацию о приюте":
                         animalShelterKeyboard.sendMenuInformationAboutShelter(chatId);
                         break;
+
                     case "Информация о приюте":
                         if (isCat) {
-                            sendMessage(chatId, INFORMATION_ABOUT_CAT_SHELTER);
+                            sendMessage(chatId, Constants.INFORMATION_ABOUT_DOG_SHELTER);
                             break;
                         } else {
-                            sendMessage(chatId, INFORMATION_ABOUT_DOG_SHELTER);
+                            sendMessage(chatId, Constants.INFORMATION_ABOUT_DOG_SHELTER);
                         }
                         break;
-                    case "Советы и рекомендации":
-                        if (isCat) {
-                            sendMessage(chatId, INFORMATION_ABOUT_CATS);
-                            break;
-                        } else {
-                            sendMessage(chatId, INFORMATION_ABOUT_DOGS);
-                            break;
-                        }
-                    case "Как взять животное из приюта?":
-                        animalShelterKeyboard.sendMenuHowToTakeAnAnimal(chatId);
-                        break;
+
                     case "Прислать отчет о питомце":
-                        sendMessage(chatId, INFORMATION_ABOUT_REPORT);
-                        sendMessage(chatId, REPORT_EXAMPLE);
+                        sendMessage(chatId, Constants.INFORMATION_ABOUT_REPORT);
+                        sendMessage(chatId, Constants.REPORT_EXAMPLE);
                         break;
-                    case "Информация о возможностях бота":
-                        sendMessage(chatId, INFORMATION_ABOUT_BOT);
-                        break;
+
                     case "Вернуться в меню":
-                        animalShelterKeyboard.sendMenu(chatId);
+                        if (isCat) {
+                            animalShelterKeyboard.sendMenuCatShelter(chatId);
+                            break;
+                        } else {
+                            animalShelterKeyboard.sendMenuDogShelter(chatId);
+                        }
                         break;
-                    case "Позвать добровольца":
-                        sendMessage(chatId, "Я передал ваше сообщение добровольцам. " +
+
+                    case "Расписание":
+                        if (isCat) {
+                            sendMessage(chatId, Constants.SCHEDULE_ABOUT_CAT_SHELTER);
+                            break;
+                        } else {
+                            sendMessage(chatId, Constants.SCHEDULE_ABOUT_DOG_SHELTER);
+                            break;
+                        }
+
+                    case "Оформление пропуска":
+                        if (isCat) {
+                            sendMessage(chatId, Constants.REGISTRATION_OF_PASS_ABOUT_CAT_SHELTER);
+                            break;
+                        } else {
+                            sendMessage(chatId, Constants.REGISTRATION_OF_PASS_ABOUT_DOG_SHELTER);
+                            break;
+                        }
+
+                    case "Техника безопасности":
+                        sendMessage(chatId, Constants.TECHNICAL_SAFETY);
+                        break;
+
+                    case "Важная информация":
+                        if (isCat) {
+                            sendMessage(chatId, Constants.INFORMATION_HOW_TO_TAKE_CAT);
+                            break;
+                        } else {
+                            sendMessage(chatId, Constants.INFORMATION_HOW_TO_TAKE_DOG);
+                            break;
+                        }
+
+                    case "Правила знакомства":
+                        if (isCat) {
+                            sendMessage(chatId, Constants.RULES_FOR_GETTING_TO_KNOW_A_CAT);
+                            break;
+                        } else {
+                            sendMessage(chatId, Constants.RULES_FOR_GETTING_TO_KNOW_A_DOG);
+                            break;
+                        }
+
+                    case "Список документов":
+                        sendMessage(chatId, Constants.LIST_OF_DOCUMENTS);
+                        break;
+
+                    case "Рекомендации к транспортировке":
+                        if (isCat) {
+                            sendMessage(chatId, Constants.RECOMMENDATIONS_FOR_TRANSPORTATION_CAT);
+                            break;
+                        } else {
+                            sendMessage(chatId, Constants.RECOMMENDATIONS_FOR_TRANSPORTATION_DOG);
+                            break;
+                        }
+
+                    case "Обустройство жилья котёнка":
+                        sendMessage(chatId, Constants.ARRANGEMENT_OF_OF_HOUSING_FOR_A_KITTEN);
+                        break;
+
+                    case "Обустройство жилья взрослого кота":
+                        sendMessage(chatId, Constants.ARRANGEMENT_OF_OF_HOUSING_FOR_A_ADULT_CAT);
+                        break;
+
+                    case "Обустройство жилья кота с инвалидностью":
+                        sendMessage(chatId, Constants.ARRANGEMENT_OF_OF_HOUSING_FOR_A_CAT_WITH_A_DISABILITY);
+                        break;
+
+                    case "Причины по которым можем не выдать питомца":
+                        sendMessage(chatId, Constants.INFORMATION_WE_DO_NOT_GIVE_OUT_PETS);
+                        break;
+
+                    case "Позвать волонтёра":
+                        sendMessage(chatId, "Я передал ваше сообщение волонтёру, он скоро с вами свяжется. " +
                                   "Если у вас закрытый профиль - поделитесь контактом. " +
-                                  "Справа сверху 3 точки - отправить свой телефон");
+                                  "Нажмите справа сверху на  - \"отправить контактные данные\" и волнтёр вам перезвонит");
                         sendForwardMessage(chatId, update.message().messageId());
                         break;
-                    case "Привет":
-                        if (update.message().messageId() != null) {
-                            sendReplyMessage(chatId, "Приветствую", update.message().messageId());
-                            break;
-                        }
+
+                    case "Как взять кота из приюта":
+                        animalShelterKeyboard.sendMenuHowToTakeCat(chatId);
+                        break;
+
+                    case "Как взять собаку из приюта":
+                        animalShelterKeyboard.sendMenuHowToTakeDog(chatId);
+                        break;
+
+                    case "Обустройство жилья щенка":
+                        sendMessage(chatId, Constants.ARRANGEMENT_OF_OF_HOUSING_FOR_A_PUPPY);
+                        break;
+
+                    case "Обустройство жилья взрослой собаки":
+                        sendMessage(chatId, Constants.ARRANGEMENT_OF_OF_HOUSING_FOR_A_DOG);
+                        break;
+
+                    case "Обустройство жилья собаки с инвалидностью":
+                        sendMessage(chatId, Constants.ARRANGEMENT_OF_OF_HOUSING_FOR_A_DOG_WITH_A_DISABILITY);
+                        break;
+
+                    case "Советы кинолога":
+                        sendMessage(chatId, Constants.TIPS_FROM_A_DOG_HANDLER);
+                        break;
+
+                    case "Контакты проверенных кинологов":
+                        sendMessage(chatId, Constants.CONTACTS_OF_THE_DOG_HANDLER);
+                        break;
+
                     case "":
                         System.out.println("Так нельзя");
                         sendMessage(chatId, "Пустое сообщение");
                         break;
+
                     default:
                         // Обработка незапланированного сценария
                         sendReplyMessage(chatId, "Неизвестная команда", update.message().messageId());
@@ -200,6 +220,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         sendMessage.replyToMessageId(messageId);
         telegramBot.execute(sendMessage);
     }
+
     public void sendForwardMessage(Long chatId, Integer messageId) {
         ForwardMessage forwardMessage = new ForwardMessage(TELEGRAM_CHAT_VOLUNTEERS, chatId, messageId);
         telegramBot.execute(forwardMessage);
