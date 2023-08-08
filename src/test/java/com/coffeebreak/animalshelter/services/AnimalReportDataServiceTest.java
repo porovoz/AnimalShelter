@@ -41,12 +41,6 @@ class AnimalReportDataServiceTest {
         reportTestOne.setHealthOfAnimal("Состояние животного");
         reportTestOne.setHabitsOfAnimal("Привычки животного");
         reportTestOne.setDaysOfOwnership(7L);
-        reportTestOne.setFilePath("/path/to/file1");
-        reportTestOne.setFileSize(1024L);
-        reportTestOne.setData(new byte[]{1, 2, 3});
-        reportTestOne.setCaption("Описание отчета");
-        reportTestOne.setLastMessage(new Date());
-        reportTestOne.setLastMessageMs(1590879578000L);
 
         reportTestTwo.setId(2L);
         reportTestTwo.setChatId(2L);
@@ -54,12 +48,7 @@ class AnimalReportDataServiceTest {
         reportTestTwo.setHealthOfAnimal("Состояние животного 2");
         reportTestTwo.setHabitsOfAnimal("Привычки животного 2");
         reportTestTwo.setDaysOfOwnership(8L);
-        reportTestTwo.setFilePath("/path/to/file2");
-        reportTestTwo.setFileSize(1024L);
-        reportTestTwo.setData(new byte[]{2, 3, 4});
-        reportTestTwo.setCaption("Описание отчета 2");
-        reportTestTwo.setLastMessage(new Date());
-        reportTestTwo.setLastMessageMs(1690879578000L);
+
 
         reportListTest.add(reportTestOne);
         reportListTest.add(reportTestTwo);
@@ -108,12 +97,6 @@ class AnimalReportDataServiceTest {
         Assertions.assertEquals(result.getHealthOfAnimal(),reportTestOne.getHealthOfAnimal());
         Assertions.assertEquals(result.getHabitsOfAnimal(),reportTestOne.getHabitsOfAnimal());
         Assertions.assertEquals(result.getDaysOfOwnership(),reportTestOne.getDaysOfOwnership());
-        Assertions.assertEquals(result.getFilePath(),reportTestOne.getFilePath());
-        Assertions.assertEquals(result.getFileSize(),reportTestOne.getFileSize());
-        Assertions.assertEquals(result.getData(),reportTestOne.getData());
-        Assertions.assertEquals(result.getCaption(),reportTestOne.getCaption());
-        Assertions.assertEquals(result.getLastMessage(),reportTestOne.getLastMessage());
-        Assertions.assertEquals(result.getLastMessageMs(),reportTestOne.getLastMessageMs());
         // и наоборот
         Assertions.assertNotEquals(result,reportTestTwo);
     }
