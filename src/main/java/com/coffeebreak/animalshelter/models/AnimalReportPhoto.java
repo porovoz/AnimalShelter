@@ -18,8 +18,8 @@ public class AnimalReportPhoto {
     private String mediaTypeFile;//тип файла
     @Lob
     private byte[] data;//поток данных
+    @OneToOne
     AnimalReportData animalReportData;
-
     public AnimalReportPhoto() {
     }
 }

@@ -18,6 +18,7 @@ public class AnimalReportData {
     private String healthOfAnimal; //самочувствие животного и привыкание животного к новому месту
     private String habitsOfAnimal; //привычки животного
     private Long daysOfOwnership; //время владения
+    @OneToOne
     AnimalReportPhoto animalReportPhoto;
 
     public AnimalReportData(Long id, Long chatId, String rationOfAnimal, String healthOfAnimal, String habitsOfAnimal, Long daysOfOwnership, AnimalReportPhoto animalReportPhoto) {
