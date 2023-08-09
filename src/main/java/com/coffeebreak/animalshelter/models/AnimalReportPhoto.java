@@ -1,5 +1,6 @@
 package com.coffeebreak.animalshelter.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@AllArgsConstructor
 public class AnimalReportPhoto {
 
     @Id
@@ -23,4 +25,11 @@ public class AnimalReportPhoto {
 
     public AnimalReportPhoto() {
     }
+    public AnimalReportPhoto(Long id, String filePath, Long fileSize, String mediaTypeFile) {
+        this.id = id;
+        this.filePath = filePath;
+        this.fileSize = fileSize;
+        this.mediaTypeFile = mediaTypeFile;
+    }
+
 }
