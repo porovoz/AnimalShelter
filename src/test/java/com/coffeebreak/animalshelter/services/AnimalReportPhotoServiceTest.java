@@ -23,20 +23,20 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class AnimalReportPhotoServiceTest {
 
-    @Value("${animal.reportPhotos.dir.path}")
-    private String reportPhotosDir;
-    @Mock
-    private AnimalReportDataService reportDataService;
-
-    @Mock
-    private AnimalReportPhotoRepository photoRepository;
-
-    @InjectMocks
-    private AnimalReportPhotoService reportPhotoService;
-
-    private final AnimalReportData testReport = new AnimalReportData(1L, 1L, "Test", "Test", "Test", 1L);
-
-    private final AnimalReportPhoto testPhoto = new AnimalReportPhoto(1L,"Test",1L,"Test");
+//    @Value("${animal.reportPhotos.dir.path}")
+//    private String reportPhotosDir;
+//    @Mock
+//    private AnimalReportDataService reportDataService;
+//
+//    @Mock
+//    private AnimalReportPhotoRepository photoRepository;
+//
+//    @InjectMocks
+//    private AnimalReportPhotoService reportPhotoService;
+//
+//    private final AnimalReportData testReport = new AnimalReportData(1L, 1L, "Test", "Test", "Test", 1L);
+//
+//    private final AnimalReportPhoto testPhoto = new AnimalReportPhoto(1L,"Test",1L,"Test");
 
     @Test
     void uploadAnimalPhotoReportFile() throws IOException {
